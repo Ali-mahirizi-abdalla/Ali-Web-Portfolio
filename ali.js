@@ -241,3 +241,57 @@
 //         elements.resumeSection.appendChild(fragment);
 //     }
 // });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  // Initialize animations when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    // Animate form inputs on focus
+    const inputs = document.querySelectorAll('.input-3d');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        anime({
+          targets: this,
+          translateZ: [0, 10],
+          duration: 500,
+          easing: 'easeOutQuad'
+        });
+      });
+      
+      input.addEventListener('blur', function() {
+        anime({
+          targets: this,
+          translateZ: [10, 0],
+          duration: 300,
+          easing: 'easeInQuad'
+        });
+      });
+    });
+    
+    // Animate contact section when scrolled into view
+    const contactSection = document.querySelector('.contact');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          anime({
+            targets: '.contact-info',
+            translateX: [-50, 0],
+            opacity: [0, 1],
+            duration: 800,
+            easing: 'easeOutExpo'
+          });
+          
+          anime({
+            targets: '.contact-form',
+            translateX: [50, 0],
+            opacity: [0, 1],
+            duration: 800,
+            easing: 'easeOutExpo',
+            delay: 200
+          });
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(contactSection);
+  });
